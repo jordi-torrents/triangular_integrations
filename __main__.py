@@ -75,7 +75,6 @@ def main(
             # Velocity_Verlet_steps(N_inter_steps, gm, F, v, x, num1, num2, N_particles)
             numfor.pefrl_steps(
                 steps=measure_length,
-                gm=gm,
                 v=v,
                 x=x,
                 num1=num1,
