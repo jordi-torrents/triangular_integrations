@@ -125,6 +125,13 @@ To simplify the code, we will set the numerator of the second fraction as a spec
 ### Initial conditions
 
 The superindex $f^{\delta t}$ indicates $f(t=\delta t)$
+
+$$
+x_i^{\delta t}=
+  \Delta x\frac{i}{M}
+  \Delta x\left(i-M+1\right)
+$$
+
 $$
 x_i^{\delta t}=
 \begin{cases}
