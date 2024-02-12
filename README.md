@@ -20,12 +20,14 @@ python -m numpy.f2py -c integrators.f90 -m integrators
 
 ``` python
 import integrators
-integrators.pefrl_steps()
+integrators.pefrl_steps(steps:int,v:np.ndarray, x:np.ndarray, num1:np.ndarray, num2:np.ndarray, dt:float)
 ```
 
-### `integrators.pefrl_steps(steps:int,v:np.ndarray, x:np.ndarray, num1:np.ndarray, num2:np.ndarray, dt:float)`
-
 You can also use the example code in `__main__.py`. To run it, install first [Rich](https://rich.readthedocs.io/) with `pip install rich`.
+
+```
+python . -o OUTPUT_FILE [-N N] [-M M] [-dt DT] [-measure_length MEASURE_LENGTH] [-n_measures N_MEASURES] [-dimensions {1,2}]
+```
 
 Finally, run ``python visualize_system.py my_results.dat`` to plot the trajectories in ``my_results.dat``.
 
