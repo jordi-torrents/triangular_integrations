@@ -1,0 +1,175 @@
+<h1 id="usage">Usage</h1>
+<h2 id="install-a-fortran-compiler-if-you-dont-have-one">1 Install a
+Fortran compiler if you don’t have one:</h2>
+<p>Check <a
+href="https://fortran-lang.org/learn/os_setup/install_gfortran/">how</a>,
+in Ubuntu:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install gfortran</span></code></pre></div>
+<h2 id="create-an-environment-with-python-and-numpy.">2 Create an
+environment with Python and Numpy.</h2>
+<p>Conda environments work great but, actually, you can run this code
+almost anywhere, there are no strict requirements.</p>
+<h2 id="compile-fortran-subroutines-with-numpys-fortran-to-python">3
+Compile Fortran subroutines with <a
+href="https://numpy.org/doc/stable/f2py/">Numpy’s Fortran to
+Python</a></h2>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> numpy.f2py <span class="at">-c</span> integrators.f90 <span class="at">-m</span> integrators</span></code></pre></div>
+<h2 id="use-the-library">4 Use the library</h2>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> integrators</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>integrators.pefrl_steps()</span></code></pre></div>
+<h3
+id="integrators.pefrl_stepsstepsintvnp.ndarray-xnp.ndarray-num1np.ndarray-num2np.ndarray-dtfloat"><code>integrators.pefrl_steps(steps:int,v:np.ndarray, x:np.ndarray, num1:np.ndarray, num2:np.ndarray, dt:float)</code></h3>
+<p>You can also use the example code in <code>__main__.py</code>. To run
+it, install first <a href="https://rich.readthedocs.io/">Rich</a> with
+<code>pip install rich</code>.</p>
+<h1 id="equations">Equations</h1>
+<pre><code>(from “Triangular” ideas. Idea 03, “The disk”. Version 010.3)</code></pre>
+<p><span class="math inline">\({\color{red}\text{Red terms}}\)</span>
+indicate a 2 dimensinal system. Removing them would bring the system to
+1D.</p>
+<p><span class="math display">\[\ddot{x}_0
+=-\frac{g}{m}\frac{-n_{1/2}}{x_{0}-x_{1/2}}\\
+\ddot{x}_i
+=-\frac{g}{m}\frac{n_{i-1/2}-n_{i+1/2}}{x_{i-1/2}-x_{i+1/2}}\\
+0&lt;x_N&lt;x_{N-1}&lt;...&lt;x_1&lt;x_0&lt; \infin \]</span></p>
+with $$
+<span class="math display">\[\begin{split}
+x_{i-1/2} &amp; \equiv \frac{x_{i-1}+x_i}{2} \quad\text{for}\quad 0&lt;i
+\\
+x_{i+1/2} &amp; \equiv \frac{x_i+x_{i+1}}{2} \quad\text{for}\quad i&lt;N
+\\
+x_{N+1/2} &amp; \equiv \frac{x_N}{2} \\
+
+n_{i-1/2} &amp; \equiv n^{\delta t}\left(x^{\delta
+t}_{i-1/2}\right)\red{\frac{x^{\delta
+t}_{i-1/2}}{x_{i-1/2}}}\frac{x^{\delta t}_{i-1}-x^{\delta
+t}_i}{x_{i-1}-x_i}\\
+n_{i+1/2} &amp; \equiv n^{\delta t}\left(x^{\delta
+t}_{i+1/2}\right)\red{\frac{x^{\delta
+t}_{i+1/2}}{x_{i+1/2}}}\frac{x^{\delta t}_i-x^{\delta
+t}_{i+1}}{x_i-x_{i+1}}\quad\text{for}\quad i&lt;N \\
+n_{N+1/2} &amp; \equiv n^{\delta t}\left(x^{\delta
+t}_{N+1/2}\right)\red{\frac{x^{\delta
+t}_{N+1/2}}{x_{N+1/2}}}\frac{x^{\delta t}_N}{x_N} \end{split}\]</span>
+<p>$$</p>
+<p>Forces can be rewritten as:</p>
+<p>$$ <span class="math display">\[\begin{align}
+
+\ddot{x}_i &amp;
+=-\frac{g}{m}\frac{n_{i-1/2}-n_{i+1/2}}{x_{i-1/2}-x_{i+1/2}}\\
+
+&amp; = -\frac{g}{m}
+\frac{
+    n^{\delta t}\left(x^{\delta t}_{i-1/2}\right)\red{\frac{x^{\delta
+t}_{i-1/2}}{x_{i-1/2}}}\frac{x^{\delta t}_{i-1}-x^{\delta
+t}_i}{x_{i-1}-x_i}
+    -n^{\delta t}\left(x^{\delta t}_{i+1/2}\right)\red{\frac{x^{\delta
+t}_{i+1/2}}{x_{i+1/2}}}\frac{x^{\delta t}_i-x^{\delta
+t}_{i+1}}{x_i-x_{i+1}}}
+{x_{i-1/2}-x_{i+1/2}}\\
+
+&amp; = -2\frac{g}{m}
+\frac{
+    n^{\delta t}\left(\frac{x^{\delta t}_{i-1}+x^{\delta
+t}_i}{2}\right)\red{\frac{x^{\delta t}_{i-1}+x^{\delta
+t}_i}{x_{i-1}+x_i}}\frac{x^{\delta t}_{i-1}-x^{\delta t}_i}{x_{i-1}-x_i}
+    -n^{\delta t}\left(\frac{x^{\delta t}_{i+1}+x^{\delta
+t}_i}{2}\right)\red{\frac{x^{\delta t}_{i}+x^{\delta
+t}_{i+1}}{x_{i}+x_{i+1}}}\frac{x^{\delta t}_i-x^{\delta
+t}_{i+1}}{x_i-x_{i+1}}}{x_{i-1}-x_{i+1}}\\
+
+&amp; =
+\frac{\Phi_i^-}{\red{\left(x_{i-1}+x_i\right)}\left(x_{i-1}-x_i\right)\left(x_{i-1}-x_{i+1}\right)}
+   +\frac{\Phi_i^+}{\red{\left(x_i+x_{i+1}\right)}\left(x_i-x_{i+1}\right)\left(x_{i-1}-x_{i+1}\right)}
+
+\end{align}\]</span> $$</p>
+<p>where</p>
+<p>$$ <span class="math display">\[\begin{align}
+
+\Phi_i^-&amp;= -2\frac{g}{m}n^{\delta t}\left(\frac{x^{\delta
+t}_{i-1}+x^{\delta t}_i}{2}\right)
+\red{\left(x^{\delta t}_{i-1}+x^{\delta t}_i\right)}\left(x^{\delta
+t}_{i-1}-x^{\delta t}_i\right) \\
+\Phi_i^+&amp;=+2\frac{g}{m}n^{\delta t}\left(\frac{x^{\delta
+t}_{i+1}+x^{\delta t}_i}{2}\right)\red{\left(x^{\delta t}_{i}+x^{\delta
+t}_{i+1}\right)}\left(x^{\delta t}_{i}-x^{\delta t}_{i+1}\right)
+
+\end{align}\]</span> $$</p>
+<p>are fixed parameters not depending on <span
+class="math inline">\(x\)</span> and, thus, can be computed
+beforehand.</p>
+<h3 id="boundary-conditions">Boundary conditions</h3>
+<h4 id="i0"><span class="math inline">\(i=0\)</span></h4>
+<p>$$ <span class="math display">\[\begin{align}
+\ddot{x}_0 &amp;=-\frac{g}{m}\frac{-n_{1/2}}{x_{0}-x_{1/2}}\\
+&amp;=-\frac{g}{m}\frac{-n^{\delta t}\left(x^{\delta
+t}_{1/2}\right)\red{\frac{x^{\delta t}_{1/2}}{x_{1/2}}}\frac{x^{\delta
+t}_0-x^{\delta t}_{1}}{x_0-x_{1}}}{x_0-x_{1/2}}\\
+
+&amp;=2\frac{g}{m}\frac{n^{\delta t}\left(\frac{x^{\delta t}_0+x^{\delta
+t}_1}{2}\right)\red{\frac{x^{\delta t}_0+x^{\delta
+t}_1}{x_0+x_1}}\frac{x^{\delta t}_0-x^{\delta
+t}_{1}}{x_0-x_{1}}}{x_0-x_1}\\
+&amp;=\frac{\Phi^+_0}{\red{(x_0+x_1)}(x_0-x_1)(x_0-x_1)}
+\end{align}\]</span> $$</p>
+<h4 id="in"><span class="math inline">\(i=N\)</span></h4>
+<p>$$ <span class="math display">\[\begin{align}
+\ddot{x}_N
+&amp;=-\frac{g}{m}\frac{n_{N-1/2}-n_{N+1/2}}{x_{N-1/2}-x_{N+1/2}}\\
+&amp;= -\frac{g}{m}
+\frac{
+    n^{\delta t}\left(x^{\delta t}_{N-1/2}\right)\red{\frac{x^{\delta
+t}_{N-1/2}}{x_{N-1/2}}}\frac{x^{\delta t}_{N-1}-x^{\delta
+t}_N}{x_{N-1}-x_N}
+    -n^{\delta t}\left(x^{\delta t}_{N+1/2}\right)\red{\frac{x^{\delta
+t}_{N+1/2}}{x_{N+1/2}}}\frac{x^{\delta t}_N}{x_N}}
+{x_{N-1/2}-x_{N+1/2}}\\
+&amp;= -2\frac{g}{m}
+\frac{
+    n^{\delta t}\left(\frac{x^{\delta t}_{N-1}+x^{\delta
+t}_N}{2}\right)\red{\frac{x^{\delta t}_{N-1}+x^{\delta
+t}_N}{x_{N-1}+x_N}}\frac{x^{\delta t}_{N-1}-x^{\delta t}_N}{x_{N-1}-x_N}
+    -n^{\delta t}\left(x^{\delta t}_N/2\right)\red{\frac{x^{\delta
+t}_N}{x_N}}\frac{x^{\delta t}_N}{x_N}}
+{x_{N-1}}\\
+
+&amp;=
+\frac{\Phi^-_N}{\red{(x_{N-1}+x_N)}(x_{N-1}-x_N)x_{N-1}}+\frac{2\frac{g}{m}n^{\delta
+t}\left(x^{\delta t}_N/2\right)\red{x^{\delta t}_N}x^{\delta
+t}_N}{\red{x_N}x_Nx_{N-1}}
+\end{align}\]</span> $$</p>
+<p>To simplify the code, we will set the numerator of the second
+fraction as a special value in <span
+class="math inline">\(\Phi^+_N\)</span></p>
+<h3 id="initial-conditions">Initial conditions</h3>
+<p>The superindex <span class="math inline">\(f^{\delta t}\)</span>
+indicates <span class="math inline">\(f(t=\delta t)\)</span></p>
+<p><span class="math display">\[
+x_i^{\delta t}=
+  \Delta x\frac{i}{M}
+  \Delta x\left(i-M+1\right)
+\]</span></p>
+$$ x_i^{t}=
+<span class="math display">\[\begin{cases}
+  \Delta x\frac{i}{M} &amp; \text{for}\quad 0\leq i\leq M \\
+  \Delta x\left(i-M+1\right) &amp;  \text{for}\quad M\leq i\leq N
+\end{cases}\]</span>
+<p>\</p>
+n^{t}(x)=
+<span class="math display">\[\begin{cases}
+  \frac{1}{9}\frac{m}{g}\left[\frac{x-(R_0+2V_\mu\delta t)}{\delta
+t}\right]^2 &amp; \text{for}\quad R_0-V_\mu\delta t\leq x\leq
+R_0+2V_\mu\delta t \\
+  n(0) &amp;  \text{for}\quad 0&lt; x\leq R_0-V_\mu\delta t
+\end{cases}\]</span>
+<p>\</p>
+^{t}(x)=
+<span class="math display">\[\begin{cases}
+  2V_\mu+\frac{2}{3}\frac{x-(R_0+2V_\mu\delta t)}{\delta t} &amp;
+\text{for}\quad R_0-V_\mu\delta t\leq x\leq R_0+2V_\mu\delta t \\
+  0 &amp;  \text{for}\quad 0&lt; x\leq R_0-V_\mu\delta t
+\end{cases}\]</span>
+<p>$$</p>
