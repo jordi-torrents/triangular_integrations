@@ -2,3 +2,8 @@
 *.so
 *.exe
 *.pyc
+*.log
+*.aux
+*.fls
+*.gz
+*.fdb_latexmk
