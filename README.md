@@ -23,4 +23,4 @@ integrators.pefrl_steps()
 
 ### `integrators.pefrl_steps(steps:int,v:np.ndarray, x:np.ndarray, num1:np.ndarray, num2:np.ndarray, dt:float)`
 
-You can also use the example code in `__main__.py`.
+You can also use the example code in `__main__.py`. To run it, install first [Rich](https://rich.readthedocs.io/) with `pip install rich`.
