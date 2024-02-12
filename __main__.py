@@ -6,8 +6,16 @@ from rich.progress import track
 
 
 def main(
-    N: int, M: int, dt: float, n_measures: int, measure_length: int, output_file: Path
+    N: int,
+    M: int,
+    dt: float,
+    n_measures: int,
+    measure_length: int,
+    output_file: Path,
+    dimensions: int,
 ) -> None:
+    assert dimensions in (1, 2)
+
     gm = 1.0
     n_0 = 1.0
     w = 1.0
@@ -39,22 +47,33 @@ def main(
 
     # phi_minus
     for i in range(1, N + 1):
-        phi_minus[i] = -2 * gm * (x[i - 1] + x[i]) * (x[i - 1] - x[i])
-    for i in range(1, N + 1):  # add the density term
+        phi_minus[i] = -2 * gm * (x[i - 1] - x[i])
+
+    if dimensions == 2:
+        for i in range(1, N + 1):
+            phi_minus[i] *= x[i - 1] + x[i]
+
+    # add the density term
+    for i in range(1, N + 1):
         x_ = (x[i - 1] + x[i]) / 2
         if x_ > (R0 - V_mu * delta_t):
             phi_minus[i] *= ((x_ - (R0 + 2 * V_mu * delta_t)) / delta_t) ** 2 / (9 * gm)
 
     # phi_plus
-    for i in range(1, N):
-        phi_plus[i] = +2 * gm * (x[i] + x[i + 1]) * (x[i] - x[i + 1])
+    for i in range(N):
+        phi_plus[i] = +2 * gm * (x[i] - x[i + 1])
+
+    if dimensions == 2:
+        for i in range(N):
+            phi_plus[i] *= x[i] + x[i + 1]
+
     for i in range(N):  # add the density term
         x_ = (x[i + 1] + x[i]) / 2
         if x_ > (R0 - V_mu * delta_t):
             phi_plus[i] *= ((x_ - (R0 + 2 * V_mu * delta_t)) / delta_t) ** 2 / (9 * gm)
 
     # special value of phi_plus_N, the density term is one here
-    phi_plus[N] = +2 * gm * x[N] * x[N]
+    phi_plus[N] = +2 * gm * x[N] * (x[N] if dimensions == 2 else 1)
 
     time = delta_t
     record = np.empty((n_measures, 1 + len(x)))
@@ -68,6 +87,7 @@ def main(
         #     num1=num1,
         #     num2=num2,
         #     dt=dt,
+        #     dimensions = dimensions,
         # )
         integrators.pefrl_steps(
             steps=measure_length,
@@ -76,12 +96,13 @@ def main(
             phi_minus=phi_minus,
             phi_plus=phi_plus,
             dt=dt,
+            dimensions=dimensions,
         )
         time += dt * (measure_length)
 
-    print(f'Saving results in {output_file.absolute()}')
-    np.savetxt(output_file.with_suffix('.dat'), record, fmt='%.8e')
-    np.save(output_file.with_suffix('.npy'), record)
+    print(f"Saving results in {output_file.absolute()}")
+    np.savetxt(output_file.with_suffix(".dat"), record, fmt="%.8e")
+    np.save(output_file.with_suffix(".npy"), record)
 
 
 if __name__ == "__main__":
@@ -94,6 +115,7 @@ if __name__ == "__main__":
     parser.add_argument("-dt", type=float, default=0.000001)
     parser.add_argument("-measure_length", type=int, default=200)
     parser.add_argument("-n_measures", type=int, default=1700)
+    parser.add_argument("-dimensions", type=int, default=1, choices=(1, 2))
     args = vars(parser.parse_args())
 
     for key, value in args.items():
