@@ -1,8 +1,9 @@
 from pathlib import Path
 
-import integrators
 import numpy as np
 from rich.progress import track
+
+import integrators
 
 
 def main(
@@ -67,7 +68,8 @@ def main(
         for i in range(N):
             phi_plus[i] *= x[i] + x[i + 1]
 
-    for i in range(N):  # add the density term
+    # add the density term
+    for i in range(N):
         x_ = (x[i + 1] + x[i]) / 2
         if x_ > (R0 - V_mu * delta_t):
             phi_plus[i] *= ((x_ - (R0 + 2 * V_mu * delta_t)) / delta_t) ** 2 / (9 * gm)
