@@ -27,6 +27,8 @@ integrators.pefrl_steps()
 
 You can also use the example code in `__main__.py`. To run it, install first [Rich](https://rich.readthedocs.io/) with `pip install rich`.
 
+Finally, run ``python visualize_system.py my_results.dat`` to plot the trajectories in ``my_results.dat``.
+
 # Equations
 
 Check the ``equations.pdf`` file to better understand the code.
