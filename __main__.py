@@ -1,9 +1,8 @@
 from pathlib import Path
 
+import integrators
 import numpy as np
 from rich.progress import track
-
-import integrators
 
 
 def main(
@@ -72,7 +71,14 @@ def main(
             file.write(f"{time / T} ")
             file.write(" ".join(map(str, x)))
             file.write("\n")
-            # Velocity_Verlet_steps(N_inter_steps, gm, F, v, x, num1, num2, N_particles)
+            # integrators.velocity_verlet_steps(
+            #     steps=measure_length,
+            #     v=v,
+            #     x=x,
+            #     num1=num1,
+            #     num2=num2,
+            #     dt=dt,
+            # )
             integrators.pefrl_steps(
                 steps=measure_length,
                 v=v,
