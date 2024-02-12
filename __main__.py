@@ -78,33 +78,33 @@ def main(
     phi_plus[N] = +2 * gm * x[N] * (x[N] if dimensions == 2 else 1)
 
     time = delta_t
-    record = np.empty((n_measures, 1 + len(x)))
-    for i in track(range(n_measures), "Integration"):
-        record[i, 0] = time / T
-        record[i, 1:] = x
-        # integrators.velocity_verlet_steps(
-        #     steps=measure_length,
-        #     v=v,
-        #     x=x,
-        #     num1=num1,
-        #     num2=num2,
-        #     dt=dt,
-        #     dimensions = dimensions,
-        # )
-        integrators.pefrl_steps(
-            steps=measure_length,
-            v=v,
-            x=x,
-            phi_minus=phi_minus,
-            phi_plus=phi_plus,
-            dt=dt,
-            dimensions=dimensions,
-        )
-        time += dt * (measure_length)
-
-    print(f"Saving results in {output_file.absolute()}")
-    np.savetxt(output_file.with_suffix(".dat"), record, fmt="%.8e")
-    np.save(output_file.with_suffix(".npy"), record)
+    with output_file.open("w") as file:
+        for i in track(range(n_measures), "Integration"):
+            file.write(f"{time / T:.8e} ")
+            np.savetxt(
+                file,
+                [x],
+                fmt="%.8e",
+            )
+            # integrators.velocity_verlet_steps(
+            #     steps=measure_length,
+            #     v=v,
+            #     x=x,
+            #     num1=num1,
+            #     num2=num2,
+            #     dt=dt,
+            #     dimensions = dimensions,
+            # )
+            integrators.pefrl_steps(
+                steps=measure_length,
+                v=v,
+                x=x,
+                phi_minus=phi_minus,
+                phi_plus=phi_plus,
+                dt=dt,
+                dimensions=dimensions,
+            )
+            time += dt * (measure_length)
 
 
 if __name__ == "__main__":
