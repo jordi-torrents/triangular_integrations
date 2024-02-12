@@ -15,7 +15,7 @@ for filename in args.input_files:
 
     fig, ax = plt.subplots()
 
-    for particle in range(0, len(x), 50):
+    for particle in np.linspace(0, len(x)-1, 100, endpoint=True, dtype=int):
         ax.plot(time, x[particle], "k-", lw=0.5)
 
     ax.set(
