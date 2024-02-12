@@ -10,7 +10,6 @@ args = parser.parse_args()
 
 for filename in args.input_files:
     data = np.loadtxt(filename).T
-    print(filename, data.shape)
     time = data[0]
     x = data[1:]
 
@@ -27,4 +26,5 @@ for filename in args.input_files:
 
     ax.tick_params(which="both", direction="in", top=True, right=True)
     plt.tight_layout()
+    print(f"Saving figure at {filename.with_suffix('.png')}")
     fig.savefig(filename.with_suffix(".png"), dpi=300)
