@@ -19,51 +19,42 @@ def main(
 
     dt = dt * T
 
-    Delta_x = R0 / ((N - M) + 4 / 3)
+    Delta_x = R0 / (N - M + 4 / 3)
     delta_t = Delta_x / (3 * V_mu)
 
     x = np.empty((N + 1))
-    num1 = np.empty((N + 1))
-    num2 = np.empty((N + 1))
+    phi_minus = np.empty((N + 1))
+    phi_plus = np.empty((N + 1))
+
+    x[:] = R0 + 2 * V_mu * delta_t
 
     for i in range(M + 1):
-        x[i] = R0 + 2 * V_mu * delta_t - Delta_x * i / M
+        x[i] -= Delta_x * i / M
 
     for i in range(M + 1, N + 1):
-        x[i] = R0 + 2 * V_mu * delta_t - Delta_x * (i - M + 1)
+        x[i] -= Delta_x * (i - M + 1)
 
     v = 2 * V_mu + (2 / 3) * (x - (R0 + 2 * V_mu * delta_t)) / delta_t
     v[x < (R0 - V_mu * delta_t)] = 0
 
+    # phi_minus
     for i in range(1, N + 1):
+        phi_minus[i] = -2 * gm * (x[i - 1] + x[i]) * (x[i - 1] - x[i])
+    for i in range(1, N + 1):  # add the density term
+        x_ = (x[i - 1] + x[i]) / 2
+        if x_ > (R0 - V_mu * delta_t):
+            phi_minus[i] *= ((x_ - (R0 + 2 * V_mu * delta_t)) / delta_t) ** 2 / (9 * gm)
 
-        x1 = (x[i - 1] + x[i]) / 2
-        if x1 < (R0 - V_mu * delta_t):
-            num1[i] = (x[i - 1] - x[i]) * 0.5 * (x[i - 1] + x[i])
-        else:
-            num1[i] = (
-                ((x1 - (R0 + 2 * V_mu * delta_t)) / delta_t) ** 2
-                * (x[i - 1] - x[i])
-                * 0.5
-                * (x[i - 1] + x[i])
-                / (9 * gm)
-            )
+    # phi_plus
+    for i in range(1, N):
+        phi_plus[i] = +2 * gm * (x[i] + x[i + 1]) * (x[i] - x[i + 1])
+    for i in range(N):  # add the density term
+        x_ = (x[i + 1] + x[i]) / 2
+        if x_ > (R0 - V_mu * delta_t):
+            phi_plus[i] *= ((x_ - (R0 + 2 * V_mu * delta_t)) / delta_t) ** 2 / (9 * gm)
 
-    for i in range(N):
-
-        x1 = 0.50 * (x[i + 1] + x[i])
-        if x1 <= (R0 - V_mu * delta_t):
-            num2[i] = (x[i] - x[i + 1]) * 0.5 * (x[i + 1] + x[i])
-        else:
-            num2[i] = (
-                ((x1 - (R0 + 2 * V_mu * delta_t)) / delta_t) ** 2
-                * (x[i] - x[i + 1])
-                * 0.5
-                * (x[i + 1] + x[i])
-                / (9 * gm)
-            )
-
-    num2[N] = x[N] * 0.5 * x[N]
+    # special value of phi_plus_N, the density term is one here
+    phi_plus[N] = +2 * gm * x[N] * x[N]
 
     time = delta_t
     with output_file.open("w") as file:
@@ -83,8 +74,8 @@ def main(
                 steps=measure_length,
                 v=v,
                 x=x,
-                num1=num1,
-                num2=num2,
+                phi_minus=phi_minus,
+                phi_plus=phi_plus,
                 dt=dt,
             )
             time += dt * (measure_length)
