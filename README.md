@@ -31,127 +31,42 @@ You can also use the example code in `__main__.py`. To run it, install first [Ri
 
     (from “Triangular” ideas. Idea 03, “The disk”. Version 010.3)
 
-${\color{red}\text{Red terms}}$ indicate a 2 dimensinal system. Removing them would bring the system to 1D.
+<img src="https://rawgit.com/jordi-torrents/triangular_integrations/None/svgs/0a3befcf6837a01f7a1586e0834b134c.svg?invert_in_darkmode" align=middle width=98.42109914999997pt height=22.831056599999986pt/> indicate a 2 dimensinal system. Removing them would bring the system to 1D.
 
-$$\ddot{x}_0 =-\frac{g}{m}\frac{-n_{1/2}}{x_{0}-x_{1/2}}\\
-\ddot{x}_i =-\frac{g}{m}\frac{n_{i-1/2}-n_{i+1/2}}{x_{i-1/2}-x_{i+1/2}}\\
-0<x_N<x_{N-1}<...<x_1<x_0< \infin $$
+<p align="center"><img src="https://rawgit.com/jordi-torrents/triangular_integrations/None/svgs/e2bd36f3145a926bd42f3a336c0384a8.svg?invert_in_darkmode" align=middle width=138.74113275pt height=38.96533905pt/></p>
+
+<p align="center"><img src="https://rawgit.com/jordi-torrents/triangular_integrations/None/svgs/413bd8fc286d75a3d72c5fbab6a44d5a.svg?invert_in_darkmode" align=middle width=180.738129pt height=38.96533905pt/></p>
+
+<p align="center"><img src="https://rawgit.com/jordi-torrents/triangular_integrations/None/svgs/3562e55d8cc02a99026c6bfb49cc00ec.svg?invert_in_darkmode" align=middle width=242.9490822pt height=14.42921535pt/></p>
 
 with
-$$\begin{split}
-x_{i-1/2} & \equiv \frac{x_{i-1}+x_i}{2} \quad\text{for}\quad 0<i \\
-x_{i+1/2} & \equiv \frac{x_i+x_{i+1}}{2} \quad\text{for}\quad i<N \\
-x_{N+1/2} & \equiv \frac{x_N}{2} \\
-
-n_{i-1/2} & \equiv n^{\delta t}\left(x^{\delta t}_{i-1/2}\right)\red{\frac{x^{\delta t}_{i-1/2}}{x_{i-1/2}}}\frac{x^{\delta t}_{i-1}-x^{\delta t}_i}{x_{i-1}-x_i}\\
-n_{i+1/2} & \equiv n^{\delta t}\left(x^{\delta t}_{i+1/2}\right)\red{\frac{x^{\delta t}_{i+1/2}}{x_{i+1/2}}}\frac{x^{\delta t}_i-x^{\delta t}_{i+1}}{x_i-x_{i+1}}\quad\text{for}\quad i<N \\
-n_{N+1/2} & \equiv n^{\delta t}\left(x^{\delta t}_{N+1/2}\right)\red{\frac{x^{\delta t}_{N+1/2}}{x_{N+1/2}}}\frac{x^{\delta t}_N}{x_N} \end{split}$$
+<p align="center"><img src="https://rawgit.com/jordi-torrents/triangular_integrations/None/svgs/e1c480f7937c0191a068fb1775cadd34.svg?invert_in_darkmode" align=middle width=356.05290105pt height=99.1177539pt/></p>
 
 
 Forces can be rewritten as:
 
-$$
-\begin{align}
-
-\ddot{x}_i & =-\frac{g}{m}\frac{n_{i-1/2}-n_{i+1/2}}{x_{i-1/2}-x_{i+1/2}}\\
-
-& = -\frac{g}{m}
-\frac{
-    n^{\delta t}\left(x^{\delta t}_{i-1/2}\right)\red{\frac{x^{\delta t}_{i-1/2}}{x_{i-1/2}}}\frac{x^{\delta t}_{i-1}-x^{\delta t}_i}{x_{i-1}-x_i}
-    -n^{\delta t}\left(x^{\delta t}_{i+1/2}\right)\red{\frac{x^{\delta t}_{i+1/2}}{x_{i+1/2}}}\frac{x^{\delta t}_i-x^{\delta t}_{i+1}}{x_i-x_{i+1}}}
-{x_{i-1/2}-x_{i+1/2}}\\
-
-& = -2\frac{g}{m}
-\frac{
-    n^{\delta t}\left(\frac{x^{\delta t}_{i-1}+x^{\delta t}_i}{2}\right)\red{\frac{x^{\delta t}_{i-1}+x^{\delta t}_i}{x_{i-1}+x_i}}\frac{x^{\delta t}_{i-1}-x^{\delta t}_i}{x_{i-1}-x_i}
-    -n^{\delta t}\left(\frac{x^{\delta t}_{i+1}+x^{\delta t}_i}{2}\right)\red{\frac{x^{\delta t}_{i}+x^{\delta t}_{i+1}}{x_{i}+x_{i+1}}}\frac{x^{\delta t}_i-x^{\delta t}_{i+1}}{x_i-x_{i+1}}}{x_{i-1}-x_{i+1}}\\
-
-& = \frac{\Phi_i^-}{\red{\left(x_{i-1}+x_i\right)}\left(x_{i-1}-x_i\right)\left(x_{i-1}-x_{i+1}\right)}
-   +\frac{\Phi_i^+}{\red{\left(x_i+x_{i+1}\right)}\left(x_i-x_{i+1}\right)\left(x_{i-1}-x_{i+1}\right)}
-
-\end{align}
-$$
+<p align="center"><img src="https://rawgit.com/jordi-torrents/triangular_integrations/None/svgs/77c227773a3786c6940697543103e48e.svg?invert_in_darkmode" align=middle width=473.03189669999995pt height=184.30546034999998pt/></p>
 
 where
 
-$$
-\begin{align}
+<p align="center"><img src="https://rawgit.com/jordi-torrents/triangular_integrations/None/svgs/3f274456baf00443f0b9fa854d3530e4.svg?invert_in_darkmode" align=middle width=392.66359769999997pt height=63.85783634999999pt/></p>
 
-\Phi_i^-&= -2\frac{g}{m}n^{\delta t}\left(\frac{x^{\delta t}_{i-1}+x^{\delta t}_i}{2}\right)
-\red{\left(x^{\delta t}_{i-1}+x^{\delta t}_i\right)}\left(x^{\delta t}_{i-1}-x^{\delta t}_i\right) \\
-\Phi_i^+&=+2\frac{g}{m}n^{\delta t}\left(\frac{x^{\delta t}_{i+1}+x^{\delta t}_i}{2}\right)\red{\left(x^{\delta t}_{i}+x^{\delta t}_{i+1}\right)}\left(x^{\delta t}_{i}-x^{\delta t}_{i+1}\right)
-
-\end{align}
-$$
-
-are fixed parameters not depending on $x$ and, thus, can be computed beforehand.
+are fixed parameters not depending on <img src="https://rawgit.com/jordi-torrents/triangular_integrations/None/svgs/332cc365a4987aacce0ead01b8bdcc0b.svg?invert_in_darkmode" align=middle width=9.39498779999999pt height=14.15524440000002pt/> and, thus, can be computed beforehand.
 
 ### Boundary conditions
-#### $i=0$
+#### <img src="https://rawgit.com/jordi-torrents/triangular_integrations/None/svgs/60931310d3828bd99080883e02a873f4.svg?invert_in_darkmode" align=middle width=35.80006649999999pt height=21.68300969999999pt/>
 
-$$
-\begin{align}
-\ddot{x}_0 &=-\frac{g}{m}\frac{-n_{1/2}}{x_{0}-x_{1/2}}\\
-&=-\frac{g}{m}\frac{-n^{\delta t}\left(x^{\delta t}_{1/2}\right)\red{\frac{x^{\delta t}_{1/2}}{x_{1/2}}}\frac{x^{\delta t}_0-x^{\delta t}_{1}}{x_0-x_{1}}}{x_0-x_{1/2}}\\
-
-&=2\frac{g}{m}\frac{n^{\delta t}\left(\frac{x^{\delta t}_0+x^{\delta t}_1}{2}\right)\red{\frac{x^{\delta t}_0+x^{\delta t}_1}{x_0+x_1}}\frac{x^{\delta t}_0-x^{\delta t}_{1}}{x_0-x_{1}}}{x_0-x_1}\\
-&=\frac{\Phi^+_0}{\red{(x_0+x_1)}(x_0-x_1)(x_0-x_1)}
-\end{align}
-$$
+<p align="center"><img src="https://rawgit.com/jordi-torrents/triangular_integrations/None/svgs/d0c737b969091e155022e1f698be4db3.svg?invert_in_darkmode" align=middle width=367.8708198pt height=43.30602705pt/></p>
 
 
-#### $i=N$
+#### <img src="https://rawgit.com/jordi-torrents/triangular_integrations/None/svgs/9ecfc83f78777c2104ce47ad578fcd96.svg?invert_in_darkmode" align=middle width=42.580847099999986pt height=22.465723500000017pt/>
 
-$$
-\begin{align}
-\ddot{x}_N &=-\frac{g}{m}\frac{n_{N-1/2}-n_{N+1/2}}{x_{N-1/2}-x_{N+1/2}}\\
-&= -\frac{g}{m}
-\frac{
-    n^{\delta t}\left(x^{\delta t}_{N-1/2}\right)\red{\frac{x^{\delta t}_{N-1/2}}{x_{N-1/2}}}\frac{x^{\delta t}_{N-1}-x^{\delta t}_N}{x_{N-1}-x_N}
-    -n^{\delta t}\left(x^{\delta t}_{N+1/2}\right)\red{\frac{x^{\delta t}_{N+1/2}}{x_{N+1/2}}}\frac{x^{\delta t}_N}{x_N}}
-{x_{N-1/2}-x_{N+1/2}}\\
-&= -2\frac{g}{m}
-\frac{
-    n^{\delta t}\left(\frac{x^{\delta t}_{N-1}+x^{\delta t}_N}{2}\right)\red{\frac{x^{\delta t}_{N-1}+x^{\delta t}_N}{x_{N-1}+x_N}}\frac{x^{\delta t}_{N-1}-x^{\delta t}_N}{x_{N-1}-x_N}
-    -n^{\delta t}\left(x^{\delta t}_N/2\right)\red{\frac{x^{\delta t}_N}{x_N}}\frac{x^{\delta t}_N}{x_N}}
-{x_{N-1}}\\
+<p align="center"><img src="https://rawgit.com/jordi-torrents/triangular_integrations/None/svgs/90fb8de671f1e13896361d311ed63483.svg?invert_in_darkmode" align=middle width=348.29973915pt height=39.301430849999996pt/></p>
 
-&= \frac{\Phi^-_N}{\red{(x_{N-1}+x_N)}(x_{N-1}-x_N)x_{N-1}}+\frac{2\frac{g}{m}n^{\delta t}\left(x^{\delta t}_N/2\right)\red{x^{\delta t}_N}x^{\delta t}_N}{\red{x_N}x_Nx_{N-1}}
-\end{align}
-$$
-
-To simplify the code, we will set the numerator of the second fraction as a special value in $\Phi^+_N$
+To simplify the code, we will set the numerator of the second fraction as a special value in <img src="https://rawgit.com/jordi-torrents/triangular_integrations/None/svgs/10c4c2dd540d7169e6aff30edddac385.svg?invert_in_darkmode" align=middle width=23.51834099999999pt height=28.310511900000005pt/>
 
 ### Initial conditions
 
-The superindex $f^{\delta t}$ indicates $f(t=\delta t)$
+The superindex <img src="https://rawgit.com/jordi-torrents/triangular_integrations/None/svgs/3782fad0fede8fa31e7e60df0bfcdb31.svg?invert_in_darkmode" align=middle width=21.175342649999987pt height=27.91243950000002pt/> indicates <img src="https://rawgit.com/jordi-torrents/triangular_integrations/None/svgs/5b7d700b9c75a7e9bf83f28d7c9e4ff8.svg?invert_in_darkmode" align=middle width=64.32074384999999pt height=24.65753399999998pt/>
 
-$$
-x_i^{\delta t}=
-  \Delta x\frac{i}{M}
-  \Delta x\left(i-M+1\right)
-$$
-
-$$
-x_i^{\delta t}=
-\begin{cases}
-  \Delta x\frac{i}{M} & \text{for}\quad 0\leq i\leq M \\
-  \Delta x\left(i-M+1\right) &  \text{for}\quad M\leq i\leq N
-\end{cases}
-
-\\
-
-n^{\delta t}(x)=
-\begin{cases}
-  \frac{1}{9}\frac{m}{g}\left[\frac{x-(R_0+2V_\mu\delta t)}{\delta t}\right]^2 & \text{for}\quad R_0-V_\mu\delta t\leq x\leq R_0+2V_\mu\delta t \\
-  n(0) &  \text{for}\quad 0< x\leq R_0-V_\mu\delta t
-\end{cases}
-
-\\
-
-\dot{x}^{\delta t}(x)=
-\begin{cases}
-  2V_\mu+\frac{2}{3}\frac{x-(R_0+2V_\mu\delta t)}{\delta t} & \text{for}\quad R_0-V_\mu\delta t\leq x\leq R_0+2V_\mu\delta t \\
-  0 &  \text{for}\quad 0< x\leq R_0-V_\mu\delta t
-\end{cases}
-$$
+<p align="center"><img src="https://rawgit.com/jordi-torrents/triangular_integrations/None/svgs/2a328edf856b2380790fca906a7d678a.svg?invert_in_darkmode" align=middle width=482.04301200000003pt height=170.96048474999998pt/></p>
