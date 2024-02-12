@@ -3,7 +3,7 @@ from pathlib import Path
 import numpy as np
 from rich.progress import track
 
-import numfor
+import integrators
 
 
 def main(
@@ -73,7 +73,7 @@ def main(
             file.write(" ".join(map(str, x)))
             file.write("\n")
             # Velocity_Verlet_steps(N_inter_steps, gm, F, v, x, num1, num2, N_particles)
-            numfor.pefrl_steps(
+            integrators.pefrl_steps(
                 steps=measure_length,
                 v=v,
                 x=x,
