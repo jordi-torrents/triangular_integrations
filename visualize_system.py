@@ -2,14 +2,14 @@ from argparse import ArgumentParser
 from pathlib import Path
 
 import matplotlib.pyplot as plt
-import pandas as pd
+import numpy as np
 
 parser = ArgumentParser()
 parser.add_argument("input_files", nargs="+", type=Path)
 args = parser.parse_args()
 
 for filename in args.input_files:
-    data = pd.read_csv(filename, header=None, sep="\s+", comment="#").values.T
+    data = np.loadtxt(filename).T
     print(filename, data.shape)
     time = data[0]
     x = data[1:]
