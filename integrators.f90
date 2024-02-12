@@ -1,7 +1,9 @@
 subroutine compute_forces(F, num1, num2, N, x)
   implicit none
-  integer :: i, N
-  real(8) :: F(0:N), num1(0:N), num2(0:N), x(0:N)
+  integer :: i
+  integer, intent(in) :: N
+  real(8), intent(in):: num1(0:N), num2(0:N), x(0:N)
+  real(8), intent(inout) :: F(0:N)
   ! assuming g/M=1
 
   F(0) = -2.d0*(-num2(0)/((x(0)-x(1))*0.5d0*(x(0)+x(1))*(x(0)-x(1))))
@@ -33,8 +35,11 @@ end subroutine
 subroutine PEFRL_steps(steps, v, x, num1, num2, N, dt)
   ! https://doi.org/10.1016/S0010-4655(02)00451-4
   implicit none
-  integer :: steps, i, N
-  real(8) :: F(0:N), v(0:N), x(0:N), num1(0:N), num2(0:N), dt
+  integer :: i, N
+  integer, intent(in):: steps
+  real(8), intent(inout) :: v(0:N), x(0:N)
+  real(8), intent(in) :: num1(0:N), num2(0:N), dt
+  real(8) :: F(0:N)
   real(8) :: xi = .1786178958448091d0,&
              la =-.2123418310626054d0,&
              ji =-.6626458266981849d-1
